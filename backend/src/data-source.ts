@@ -1,4 +1,5 @@
 import {DataSource} from "typeorm";
+import {Transfer} from "./entities/transfer.entity";
 
 export const AppDataSource = new DataSource(
     {
@@ -8,12 +9,9 @@ export const AppDataSource = new DataSource(
         username: 'postgres',
         password: 'postgres',
         database: 'postgres',
-        synchronize: process.env.DB_SYNCHRONIZE === 'true',
+        synchronize: true,
         logging: true,
-        entities: [
-
-            __dirname + '/entities/*.ts',
-        ],
+        entities: [Transfer],
         migrations: [
 
         ],

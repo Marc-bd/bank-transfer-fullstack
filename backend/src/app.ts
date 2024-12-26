@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import  {Request, Response} from 'express';
 import {handleErrorMiddleware} from "./middleware/error.middleware";
 import {AppDataSource} from "./data-source"
+import transferRoutes from "./routes/transfer.routes";
 
 const express = require('express')
 const cors = require('cors')
@@ -22,8 +23,8 @@ AppDataSource.initialize()
         console.log('Connection to the PostgreSQL database successfully established!');
 
         // Iniciar o servidor após a conexão bem-sucedida
-        app.listen(3000, () => {
-            console.log('Server is running on port 3000');
+        app.listen(8080, () => {
+            console.log('Server is running on port 8080');
         });
     })
     .catch((error) => {
@@ -31,6 +32,7 @@ AppDataSource.initialize()
     });
 
 
+app.use('/api', transferRoutes);
 app.get('/health', (req: Request, res: Response) => {
     res.status(200).json({
                              status: 'OK',

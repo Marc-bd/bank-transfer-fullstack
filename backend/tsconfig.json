@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -16,6 +17,19 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
+    "strict": true,
+
+    "lib": ["es6", "dom"],
+
+  },
+
+
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
