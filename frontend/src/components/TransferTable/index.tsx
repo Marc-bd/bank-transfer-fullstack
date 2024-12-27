@@ -1,19 +1,19 @@
-import React from "react";
-import CustomButton from "@/components/CustomButton";
 
-type TransferData = {
-    externalId: string;
-    amount: number;
-    expectedOn: string;
-    dueDate: string | null;
-    status: string;
-};
+import React, {useState} from "react";
+import CustomButton from "@/components/CustomButton";
+import {ITransfer} from "@/interfaces/ITransfer";
+import {formatDate} from "@/utils/formatDate";
+
 
 type TableProps = {
-    transfers: TransferData[];
+    transfers: ITransfer[];
+    onCreate: () => void;
+    onEdit: (transfer: ITransfer) => void;
+
 };
 
-function TransferTable({transfers}: TableProps) {
+function TransferTable({transfers, onEdit, onCreate}: TableProps) {
+
 
     function getStatusStyle(status: string): string {
         switch (status) {
@@ -28,10 +28,6 @@ function TransferTable({transfers}: TableProps) {
         }
     }
 
-    function formatDate(date: string): string {
-        const [year, month, day] = date.split("-");
-       return `${day}/${month}/${year}`;
-    }
 
     function formatStatus(status: string): string {
         switch (status) {
@@ -45,7 +41,6 @@ function TransferTable({transfers}: TableProps) {
     }
 
 
-
     return (
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-sky-700 max-h-[35rem]">
@@ -54,7 +49,7 @@ function TransferTable({transfers}: TableProps) {
                     Minhas Transferências
                 </h4>
                 <div>
-                    <CustomButton title="Criar Transferência"/>
+                    <CustomButton title="Criar Transferência" onClick={() => onCreate()} />
                 </div>
             </div>
             <hr className="border-b-2 border-sky-700 w-full bg-sky-700 my-1"/>
@@ -96,7 +91,7 @@ function TransferTable({transfers}: TableProps) {
                     </thead>
                     <tbody>
                     {transfers.length > 0 ? (
-                        transfers.map((transfer: TransferData) => (
+                        transfers.map((transfer: ITransfer) => (
                             <tr
                                 key={transfer.externalId}
                                 className="bg-white border-b hover:bg-gray-50"
@@ -112,28 +107,43 @@ function TransferTable({transfers}: TableProps) {
                                 <td className="px-6 py-4  text-center">{transfer.dueDate ? formatDate(transfer.dueDate) : '-'}</td>
                                 <td className={`px-6 py-4 font-semibold text-center ${getStatusStyle(transfer.status)}`}>{formatStatus(transfer.status)}</td>
                                 <td className="px-6 py-4  text-center">
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         className="font-semibold text-blue-600 hover:underline"
+                                        onClick={() => onEdit(transfer)}
+
                                     >
                                         Editar
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
                             <td
-                                colSpan={5}
-                                className="px-6 py-4 text-center text-gray-500"
-                            >
-                                No transfer found. Please add a new transfer.
+                                colSpan={6}
+                                className="px-6 py-4 bg-gray-200 text-center text-sky-950 text-[1rem] font-semibold">
+                                <div className={"flex flex-col gap-5 py-4"}>
+                                    <p>
+
+                                Ainda não há nenhuma transação cadastrada.
+                                    </p>
+                                    <p>
+                                Para adicionar uma nova, é só clicar no botão <span className={"font-bold"}> Criar
+                                        Transferência</span>
+
+                                    </p>
+                                </div>
                             </td>
+
                         </tr>
                     )}
                     </tbody>
                 </table>
             </div>
+
+
+
         </div>
     );
 }

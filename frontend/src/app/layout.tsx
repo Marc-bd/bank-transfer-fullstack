@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header";
+import CustomHeader from "../components/CustomHeader";
 
 const montSerratFont = Montserrat({
     variable: "--font-montserrat",
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body
         className={`${montSerratFont.className} relative antialiased grid grid-rows-[auto_1fr] h-screen`}
       >
-      <Header />
+      <CustomHeader />
       <main className="overflow-auto">
         {children}
       </main>
