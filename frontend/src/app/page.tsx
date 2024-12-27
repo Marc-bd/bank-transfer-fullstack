@@ -1,16 +1,21 @@
-import Index from "@/components/CustomButton";
 import TransferTable from "@/components/TransferTable";
+import Modal from "@/components/Modal";
 
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center h-full  bg-gray-100 ">
+    <div className=" flex flex-col items-center h-full  bg-gray-100 ">
 
 
       <div className="w-9/12 pt-20">
         <TransferTable transfers={transfers} />
       </div>
 
+      <Modal>
+        <div className={"bg-white w-96 h-96 rounded"}>
+          hhehehehehe
+        </div>
+      </Modal>
 
 
     </div>

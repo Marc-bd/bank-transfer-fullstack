@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montSerratFont.className} antialiased grid grid-rows-[auto_1fr] h-screen`}
+        className={`${montSerratFont.className} relative antialiased grid grid-rows-[auto_1fr] h-screen`}
       >
       <Header />
       <main className="overflow-auto">
