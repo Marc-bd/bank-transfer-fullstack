@@ -20,35 +20,35 @@ export default function Home() {
 const transfers = [
   {
     "externalId": "97be2aad-2369-4e4c-88e4-f724d261cae4",
-    "amount": 2,
+    "amount": 925.80,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "pending"
   },
   {
     "externalId": "7de2e2ab-ad56-402f-850b-1208136b0f31",
-    "amount": 2,
+    "amount": 299.58,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "pending"
   },
   {
     "externalId": "6930d804-6c64-4cb2-a06f-7605fae2c7e9",
-    "amount": 2,
+    "amount": 35.25,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "pending"
   },
   {
     "externalId": "3d69040d-9885-49c9-bf6d-5e11c772559e",
-    "amount": 2.34,
+    "amount": 248.34,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "pending"
   },
   {
     "externalId": "dbe99f0f-b527-48b9-9d01-b9668a19d08d",
-    "amount": 2.34,
+    "amount": 1859.34,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "pending"
@@ -76,7 +76,7 @@ const transfers = [
   },
   {
     "externalId": "ea784f0e-8a9c-406b-bc47-09d421b0eef9",
-    "amount": 2,
+    "amount": 85963,
     "expectedOn": "2025-01-29",
     "dueDate": null,
     "status": "completed"

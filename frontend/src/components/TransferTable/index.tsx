@@ -13,18 +13,51 @@ type TableProps = {
     transfers: TransferData[];
 };
 
-function TransferTable({ transfers }: TableProps) {
+function TransferTable({transfers}: TableProps) {
+
+    function getStatusStyle(status: string): string {
+        switch (status) {
+            case "canceled":
+                return "text-red-500";
+            case "pending":
+                return "text-orange-500";
+            case "completed":
+                return "text-green-500";
+            default:
+                return "text-sky-900";
+        }
+    }
+
+    function formatDate(date: string): string {
+        const [year, month, day] = date.split("-");
+       return `${day}/${month}/${year}`;
+    }
+
+    function formatStatus(status: string): string {
+        switch (status) {
+            case "canceled":
+                return "Cancelado";
+            case "completed":
+                return "Concluído";
+            default:
+                return "Pendente";
+        }
+    }
+
+
+
     return (
+
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-sky-700 max-h-[35rem]">
             <div className="flex flex-row justify-between items-center p-3">
                 <h4 className="text-lg font-semibold text-left text-white">
                     Minhas Transferências
                 </h4>
                 <div>
-                    <CustomButton title="Criar Transferência" />
+                    <CustomButton title="Criar Transferência"/>
                 </div>
             </div>
-            <hr className="border-b-2 border-sky-700 w-full bg-sky-700 my-1" />
+            <hr className="border-b-2 border-sky-700 w-full bg-sky-700 my-1"/>
             <div className="relative max-h-[30rem] overflow-y-auto">
                 <table className="w-full text-sm text-left text-gray-500">
                     <thead className="bg-gray-200 sticky top-0 z-10">
@@ -40,7 +73,7 @@ function TransferTable({ transfers }: TableProps) {
                             Valor
                         </th>
                         <th scope="col"
-                            className="px-6 py-3 text-sky-900"
+                            className="px-6 py-3 text-sky-900 text-center"
                         >
                             Data de agendamento
                         </th>
@@ -74,14 +107,14 @@ function TransferTable({ transfers }: TableProps) {
                                 >
                                     {transfer.externalId}
                                 </th>
-                                <td className="px-6 py-4 text-center">{transfer.amount}</td>
-                                <td className="px-6 py-4  text-center">{transfer.expectedOn}</td>
-                                <td className="px-6 py-4  text-center">{transfer.dueDate}</td>
-                                <td className="px-6 py-4  text-center">{transfer.status}</td>
+                                <td className="px-6 py-4 text-center">{transfer.amount.toLocaleString()}</td>
+                                <td className="px-6 py-4  text-center">{formatDate(transfer.expectedOn)}</td>
+                                <td className="px-6 py-4  text-center">{transfer.dueDate ? formatDate(transfer.dueDate) : '-'}</td>
+                                <td className={`px-6 py-4 font-semibold text-center ${getStatusStyle(transfer.status)}`}>{formatStatus(transfer.status)}</td>
                                 <td className="px-6 py-4  text-center">
                                     <a
                                         href="#"
-                                        className="font-medium text-blue-600 hover:underline"
+                                        className="font-semibold text-blue-600 hover:underline"
                                     >
                                         Editar
                                     </a>
