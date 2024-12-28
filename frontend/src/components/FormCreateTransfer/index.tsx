@@ -38,7 +38,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
 
     function convertStringDateToDate(date:string) {
         const [day, month, year] = date.split('/');
-       return new Date(`${year}-${month}-${day}`);
+       return`${year}/${month}/${day}`
     }
 
     function getPostMessage(status: string) {
@@ -66,6 +66,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
                 expectedOn: convertStringDateToDate(data.expectedOn),
             }
 
+            console.log(newTransferData);
             const newTransfer = await TransferService.create(newTransferData)
 
             if(newTransfer) {
@@ -80,6 +81,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
             }
 
         } catch (error) {
+
             toast.error("Ops, parece que o servidor não está conectado!")
             onCloseForm()
             setLoading(false);

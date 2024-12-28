@@ -4,19 +4,27 @@ import {Transfer} from "../entities/transfer.entity";
 import {TransferStatus} from "../enums/transfer.enum";
 import {CreateTransfer} from "../interfaces/transfer.interfaces";
 import {settlementInfoData} from "../shared/constants";
+const { DateTime } = require("luxon");
 
-class TransferService {
+
+export default class TransferService {
+
+
     private static transferRepository = AppDataSource.getRepository(Transfer);
 
 
-    private static async randomSettlement(): Promise<{ status: TransferStatus; observation: string }> {
+    private static async randomSettlement(): Promise<{
+        status: TransferStatus;
+        observation: string
+    }> {
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 try {
                     const statusValues = Object.values(TransferStatus);
 
-                    const randomStatus = statusValues[Math.floor(Math.random() * statusValues.length)];
+                    const randomStatus = statusValues[Math.floor(Math.random() *
+                                                                     statusValues.length)];
 
                     const observations: string[] = settlementInfoData[randomStatus];
 
@@ -25,7 +33,8 @@ class TransferService {
                         throw new Error(`No comments found for status: ${randomStatus}`);
                     }
 
-                    const randomObservation = observations[Math.floor(Math.random() * observations.length)];
+                    const randomObservation = observations[Math.floor(Math.random() *
+                                                                          observations.length)];
 
                     resolve({
                                 status: randomStatus,
@@ -41,16 +50,21 @@ class TransferService {
 
     public static async create(data: CreateTransfer) {
         try {
-
-        const transfer = new Transfer();
+            console.log('data create', data )
+            const transfer = new Transfer();
             transfer.amount = data.amount;
-            transfer.expectedOn = new Date(data.expectedOn).toISOString();
-            transfer.dueDate = data.dueDate ? new Date(data.dueDate).toISOString() : null;
+            transfer.expectedOn =  data.expectedOn
+            transfer.dueDate =
+                data.dueDate ? data.dueDate : null;
 
             const settlement = await this.randomSettlement()
 
-            transfer.status = settlement.status;
-            transfer.observation = settlement.observation;
+            transfer.status =
+                settlement.status;
+            transfer.observation =
+                settlement.observation;
+
+            console.log('transfer', transfer);
 
             await this.transferRepository.save(transfer);
 
@@ -67,9 +81,9 @@ class TransferService {
     public static async getAll() {
         try {
             return await this.transferRepository.find({
-                order: {
-                    createdAt: 'desc'
-                }
+                                                          order: {
+                                                              createdAt: 'desc'
+                                                          }
                                                       });
         } catch (error) {
             throw new AppError(500, 'Error fetching transfers');
@@ -81,10 +95,13 @@ class TransferService {
             const transfer = await this.transferRepository.findOneByOrFail({externalId: id})
             return transfer;
         } catch (error) {
-                throw new AppError(400, `Transfer with id ${id} not found`  );
+            throw new AppError(400, `Transfer with id ${id} not found`);
         }
     }
 
+
+
+
 }
 
-export { TransferService };
+

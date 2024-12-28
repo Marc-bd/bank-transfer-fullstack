@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
-import {TransferService} from '../services/transfer.service';
+import TransferService from "../services/transfer.service";
+
 
 
 export class TransferController {

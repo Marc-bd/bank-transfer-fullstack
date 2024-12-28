@@ -16,6 +16,7 @@ class TransferService {
             if(error instanceof AxiosError) {
                 toast.error(error.response!.data.error[0]);
             }
+            console.log(error);
            toast.error("Ops, tente mais tarde!");
         }
     }

@@ -1,7 +1,12 @@
 import * as yup from 'yup';
 import {TransferStatus} from '../enums/transfer.enum';
 import {validate} from "uuid";
+import { DateTime } from 'luxon';
 
+function isValidDate(dateString: string): boolean {
+    const date = DateTime.fromFormat(dateString, 'yyyy/MM/dd');
+    return date.isValid && date.year <= 2100
+}
 
 export const createTransferSchema = yup.object(
     {
@@ -19,19 +24,41 @@ export const createTransferSchema = yup.object(
             .required('amount field is required'),
 
         expectedOn: yup
-            .date()
-            .typeError('expectedOn field must be a valid date')
-            .required('expectedOn field is required'),
+            .string()
+            .typeError('expectedOn field must be a valid string date, YYYY/MM/DD')
+            .required('expectedOn field is required')
+            .test(
+                'is-valid-date',
+                'expectedOn field must be a valid string date, YYYY/MM/DD',
+                (value) => value === undefined || isValidDate(value.toString())
+            ),
 
         dueDate: yup
-            .date()
-            .typeError('dueDate field must be a valid date')
+            .string()
+            .typeError('dueDate field must be a valid string date, YYYY/MM/DD')
             .nullable()
             .test(
-                'is-not-past',
-                'dueDate field cannot be earlier than today',
-                (value) => !value || value >= new Date()
-            ),
+                'is-valid-dueDate',
+                'dueDate field must be a valid string date, YYYY/MM/DD',
+                (value) => value === undefined || isValidDate(value.toString())
+            )
+        .test(
+            'is-dueDate-after-expectedOn',
+            'dueDate must be greater than expectedOn',
+            function (value) {
+                const { expectedOn } = this.parent;
+
+
+                if (value && expectedOn) {
+                    const dueDate = DateTime.fromFormat(value, 'yyyy/MM/dd');
+                    const expectedDate = DateTime.fromFormat(expectedOn, 'yyyy/MM/dd');
+
+
+                    return dueDate >= expectedDate;
+                }
+                return true;
+            }
+        ),
     }
 );
 
