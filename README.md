@@ -84,9 +84,73 @@ Cria uma nova transferência financeira.
 
 ### **Campos Necessários (Request Body):**
 
-```json
+```json lines
 {
-  "amount": "number",    // Valor da transferência (ex: 100.00)
-  "expectedOn": "string",  // Moeda da transferência (ex: "BRL")
-  "dueDate": "string"       // Data da transferência (formato ISO 8601)
+  "amount": "number",     //Valor da transferência (ex: 100.00)
+  "expectedOn": "string",  // date format YYYY/MM/DD (ex: 2024/12/28)
+  "dueDate":  "string",  // opcional date format YYYY/MM/DD (ex: 2024/12/28)
 }
+```
+### **Resposta Esperada**
+```json 
+{
+  "externalId": "uuid",
+  "amount": "number",
+  "expectedOn": "date",
+  "dueDate": "date | null",
+  "status": "boolean",
+  "observation": "string",
+  "createdAt": "date"
+}
+```
+---
+
+## **GET /transfers**
+
+### **Descrição:**
+Busca todas as trânsferências
+
+### **Método:**
+`GET`
+
+
+### **Resposta Esperada**
+```json 
+[
+  {
+    "externalId": "uuid",
+    "amount": "number",
+    "expectedOn": "date",
+    "dueDate": "date | null",
+    "status": "boolean",
+    "observation": "string",
+    "createdAt": "date"
+  }]
+```
+
+## **GET /transfers/{ID}**
+
+### **Descrição:**
+Busca todas as informações de uma determinada trânsferência
+
+### **Método:**
+`GET`
+
+### **Campos Necessários (Path Param):**
+
+```
+id: uuid        
+```
+
+### **Resposta Esperada**
+```json
+  {
+    "externalId": "uuid",
+    "amount": "number",
+    "expectedOn": "date",
+    "dueDate": "date | null",
+    "status": "boolean",
+    "observation": "string",
+    "createdAt": "date"
+  }
+```
