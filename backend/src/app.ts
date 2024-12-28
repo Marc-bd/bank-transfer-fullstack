@@ -5,6 +5,7 @@ import { AppDataSource } from './data-source';
 import transferRoutes from './routes/transfer.routes';
 import {AppError} from "./shared/errors/appError";
 import "express-async-errors";
+import axios from "axios";
 
 const express = require('express');
 const cors = require('cors');
@@ -44,8 +45,16 @@ AppDataSource.initialize()
         throw new AppError( 500, 'Error connecting to the database');
     });
 
-app.listen(8080, () => {
+app.listen(8080, async () => {
     console.log('Server is running on port 8080');
+
+
+    try {
+        const response = await axios.get('http://localhost:8080/health');
+        console.log('Health check response:', response.data);
+    } catch (error) {
+        console.error('Health check failed:', error);
+    }
 });
 
 app.use(ErrorHandler);

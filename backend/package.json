@@ -10,9 +10,11 @@
   "license": "ISC",
   "description": "backend",
   "dependencies": {
+    "@types/axios": "^0.9.36",
     "@types/cors": "^2.8.17",
     "@types/uuid": "^10.0.0",
     "@types/yup": "^0.29.14",
+    "axios": "^1.7.9",
     "cors": "^2.8.5",
     "decimal.js": "^10.4.3",
     "dotenv": "^16.4.7",
