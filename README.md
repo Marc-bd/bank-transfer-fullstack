@@ -12,10 +12,10 @@ garantir a facilidade de configuração e consistência no ambiente de desenvolv
 
 ## Detalhes Técnicos
 
-- **Back-end:** Node.js com Express.
-- **Front-end:** Next.js.
-- **Banco de Dados:** PostgreSQL.
-- **Containerização:** Docker e Docker Compose.
+- ### **Back-end:** Node.js com Express.
+- ### **Front-end:** Next.js.
+- ### **Banco de Dados:** PostgreSQL.
+- ### **Containerização:** Docker e Docker Compose.
 
 ---
 
@@ -67,6 +67,15 @@ git clone git@github.com:Marc-bd/bank-transfer-fullstack.git
 Se você tiver algum problema durante a instalação, verifique se o Docker está em execução
 corretamente e se todas as dependências foram instaladas nas pastas correspondentes.
 ---
+
+# Portas
+
+* ### Front-end: http://localhost:3000/
+* ### Back-end: http://localhost:8080/
+* ### PostgreSQL: http://localhost:5555/
+
+---
+
 # API Endpoints
 
 Esta seção descreve os principais endpoints da API para o serviço de transferências financeiras.
