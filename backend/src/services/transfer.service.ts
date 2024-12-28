@@ -50,21 +50,20 @@ export default class TransferService {
 
     public static async create(data: CreateTransfer) {
         try {
-            console.log('data create', data )
+            const settlement = await this.randomSettlement()
             const transfer = new Transfer();
             transfer.amount = data.amount;
             transfer.expectedOn =  data.expectedOn
             transfer.dueDate =
                 data.dueDate ? data.dueDate : null;
 
-            const settlement = await this.randomSettlement()
 
             transfer.status =
                 settlement.status;
             transfer.observation =
                 settlement.observation;
 
-            console.log('transfer', transfer);
+
 
             await this.transferRepository.save(transfer);
 

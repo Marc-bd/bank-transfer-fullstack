@@ -66,7 +66,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
                 expectedOn: convertStringDateToDate(data.expectedOn),
             }
 
-            console.log(newTransferData);
+
             const newTransfer = await TransferService.create(newTransferData)
 
             if(newTransfer) {

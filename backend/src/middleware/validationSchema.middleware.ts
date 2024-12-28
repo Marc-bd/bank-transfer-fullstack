@@ -13,6 +13,7 @@ export const ValidationSchemaMiddleware = (schema: ObjectSchema<unknown>) => {
             if (error instanceof ValidationError) {
                 return next(new AppError(400, error.errors.toString()));
             }
+            console.log(error)
             return next(new AppError(500, "Internal Validation Error"));
         }
     };
