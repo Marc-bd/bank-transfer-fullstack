@@ -17,7 +17,7 @@ export default function RootLayout({
         <title>MyBank Frontend</title>
     </head>
     <body
-        className={` relative grid grid-rows-[auto_1fr] h-screen`}
+        className={` relative antialiased  grid grid-rows-[auto_1fr] h-screen`}
       >
       <CustomHeader />
       <main className="overflow-auto">
