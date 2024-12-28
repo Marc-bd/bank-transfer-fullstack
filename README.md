@@ -2,14 +2,13 @@
 
 ## Descrição do Projeto
 
-Este projeto consiste no desenvolvimento de um serviço Full-Stack para o gerenciamento de
+ Este projeto consiste no desenvolvimento de um serviço Full-Stack para o gerenciamento de
 transferências financeiras. O projeto permite o usuário criar e
 vizualizar as suas trânsferências bancárias.
 
-O Back-end foi desenvolvido com Node.js e Express e o front-end com Next.js. Toda aplicação,
+ O Back-end foi desenvolvido com Node.js e Express e o front-end com Next.js. Toda aplicação,
 incluindo o banco de dados PostgreSQL, foi containerizada e executada utilizando Docker para
 garantir a facilidade de configuração e consistência no ambiente de desenvolvimento.
----
 
 ## Detalhes Técnicos
 
