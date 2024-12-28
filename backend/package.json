@@ -19,6 +19,7 @@
     "decimal.js": "^10.4.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
     "nodemon": "^3.1.9",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",

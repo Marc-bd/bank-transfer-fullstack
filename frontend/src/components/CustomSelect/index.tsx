@@ -8,6 +8,7 @@ type CustomSelectProps = {
     value?: string;
     onChange?: (value: string) => void;
     onBlur?: () => void;
+    disable?: boolean;
 };
 
 export default function CustomSelect({
@@ -18,6 +19,7 @@ export default function CustomSelect({
                                          value,
                                          onChange,
                                          onBlur,
+    disable = false,
                                      }: CustomSelectProps) {
     return (
         <div className="h-24">
@@ -33,6 +35,7 @@ export default function CustomSelect({
                 value={value || ""}
                 onChange={(e) => onChange?.(e.target.value)}
                 onBlur={onBlur}
+                disabled={disable}
             >
                 <option value="" disabled>
                     Selecione uma opção

@@ -4,7 +4,7 @@ import {Transfer} from "./entities/transfer.entity";
 export const AppDataSource = new DataSource(
     {
         type: 'postgres',
-        host: 'db',
+        host: 'postgres_db',
         port: 5432,
         username: 'postgres',
         password: 'postgres',
@@ -12,11 +12,5 @@ export const AppDataSource = new DataSource(
         synchronize: true,
         logging: true,
         entities: [Transfer],
-        migrations: [
-
-        ],
-        subscribers: [
-
-        ],
     }
 );

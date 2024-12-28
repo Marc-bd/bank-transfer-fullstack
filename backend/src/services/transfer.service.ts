@@ -3,36 +3,75 @@ import {AppDataSource} from "../data-source";
 import {Transfer} from "../entities/transfer.entity";
 import {TransferStatus} from "../enums/transfer.enum";
 import {CreateTransfer} from "../interfaces/transfer.interfaces";
+import {settlementInfoData} from "../shared/constants";
 
 class TransferService {
     private static transferRepository = AppDataSource.getRepository(Transfer);
 
+
+    private static async randomSettlement(): Promise<{ status: TransferStatus; observation: string }> {
+        console.log('Iniciando randomSettlement');
+
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    const statusValues = Object.values(TransferStatus);
+
+                    const randomStatus = statusValues[Math.floor(Math.random() * statusValues.length)];
+
+                    const observations: string[] = settlementInfoData[randomStatus];
+
+
+                    if (!observations || observations.length === 0) {
+                        throw new Error(`No comments found for status: ${randomStatus}`);
+                    }
+
+                    const randomObservation = observations[Math.floor(Math.random() * observations.length)];
+
+                    resolve({
+                                status: randomStatus,
+                                observation: randomObservation,
+                            });
+                } catch (error) {
+                    reject(error);
+                }
+            }, 2000);
+        });
+    }
+
+
     public static async create(data: CreateTransfer) {
         try {
 
-            const transfer = new Transfer();
+        const transfer = new Transfer();
             transfer.amount = data.amount;
             transfer.expectedOn = new Date(data.expectedOn).toISOString();
             transfer.dueDate = data.dueDate ? new Date(data.dueDate).toISOString() : null;
-            transfer.status = data.status;
 
+            const settlement = await this.randomSettlement()
 
-            await TransferService.transferRepository.save(transfer);
+            transfer.status = settlement.status;
+            transfer.observation = settlement.observation;
+
+            await this.transferRepository.save(transfer);
 
             return transfer;
-        } catch (error: unknown) {
-            if(error instanceof Error) {
-            throw new AppError(400, error.message);
-            } else {
-                throw new AppError(500, 'Error creating transfer');
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
             }
         }
+
     }
 
 
     public static async getAll() {
         try {
-            return await TransferService.transferRepository.find();
+            return await this.transferRepository.find({
+                order: {
+                    createdAt: 'desc'
+                }
+                                                      });
         } catch (error) {
             throw new AppError(500, 'Error fetching transfers');
         }
@@ -40,45 +79,13 @@ class TransferService {
 
     public static async getOne(id: string) {
         try {
-            const transfer = await this.transferRepository.findOneBy({externalId: id})
-
-            if(!transfer) {
-                throw new AppError(404, 'Not Found');
-            }
+            const transfer = await this.transferRepository.findOneByOrFail({externalId: id})
             return transfer;
         } catch (error) {
-            throw new AppError(500, 'Error fetching transfers');
+                throw new AppError(400, `Transfer with id ${id} not found`  );
         }
     }
 
-
-    public static async updateStatus(id: string, status: TransferStatus) {
-        try {
-
-            const transfer = await TransferService
-                .transferRepository
-                .findOne({ where: { externalId: id } });
-
-
-            if (!transfer) {
-                throw new AppError(404, 'Transfer not found');
-            }
-
-            transfer.status = status;
-
-            await TransferService.transferRepository.save(transfer);
-
-            return transfer;
-
-        } catch (error: unknown) {
-
-            if(error instanceof AppError) {
-                throw new AppError(400, error.message);
-            } else {
-                throw new AppError(500, 'Error updating transfer');
-            }
-        }
-    }
 }
 
 export { TransferService };

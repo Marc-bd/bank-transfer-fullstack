@@ -8,12 +8,11 @@ import {formatDate} from "@/utils/formatDate";
 type TableProps = {
     transfers: ITransfer[];
     onCreate: () => void;
-    onEdit: (transfer: ITransfer) => void;
+    onView: (transferId: string) => void;
 
 };
 
-function TransferTable({transfers, onEdit, onCreate}: TableProps) {
-
+function TransferTable({transfers, onView, onCreate}: TableProps) {
 
     function getStatusStyle(status: string): string {
         switch (status) {
@@ -28,7 +27,6 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
         }
     }
 
-
     function formatStatus(status: string): string {
         switch (status) {
             case "canceled":
@@ -40,6 +38,12 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
         }
     }
 
+    function formatIsoDate(date: string) {
+        const newdate = new Date(date);
+       return new Intl.DateTimeFormat('pt-BR').format(newdate);
+    }
+
+
 
     return (
 
@@ -49,7 +53,7 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
                     Minhas Transferências
                 </h4>
                 <div>
-                    <CustomButton title="Criar Transferência" onClick={() => onCreate()} />
+                    <CustomButton title="Criar Transferência" onClick={() => onCreate()}/>
                 </div>
             </div>
             <hr className="border-b-2 border-sky-700 w-full bg-sky-700 my-1"/>
@@ -58,12 +62,7 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
                     <thead className="bg-gray-200 sticky top-0 z-10">
                     <tr>
                         <th scope="col"
-                            className="px-6 py-3 text-sky-900 "
-                        >
-                            Identificação
-                        </th>
-                        <th scope="col"
-                            className="px-6 py-3 text-sky-900"
+                            className="px-6 py-3 text-sky-900 text-center "
                         >
                             Valor
                         </th>
@@ -73,24 +72,29 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
                             Data de agendamento
                         </th>
                         <th scope="col"
-                            className="px-6 py-3 text-sky-900"
+                            className="px-6 py-3 text-sky-900 text-center"
                         >
                             Vencimento
                         </th>
                         <th scope="col"
-                            className="px-6 py-3 text-sky-900"
+                            className="px-6 py-3 text-sky-900 text-center"
                         >
                             Status
                         </th>
                         <th scope="col"
-                            className="px-6 py-3"
+                            className="px-6 py-3 text-sky-900 text-center"
                         >
-                            <span className="sr-only">Edit</span>
+                            Criado em
                         </th>
+                        <th scope="col"
+                            className="px-6 py-3 text-sky-900 text-center"
+                        >
+                        </th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    {transfers.length > 0 ? (
+                    {transfers?.length > 0 ? (
                         transfers.map((transfer: ITransfer) => (
                             <tr
                                 key={transfer.externalId}
@@ -100,28 +104,25 @@ function TransferTable({transfers, onEdit, onCreate}: TableProps) {
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis max-w-[14rem]"
                                 >
-                                    {transfer.externalId}
+                                    {transfer.amount.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                                 </th>
-                                <td className="px-6 py-4 text-center">{transfer.amount.toLocaleString()}</td>
                                 <td className="px-6 py-4  text-center">{formatDate(transfer.expectedOn)}</td>
                                 <td className="px-6 py-4  text-center">{transfer.dueDate ? formatDate(transfer.dueDate) : '-'}</td>
                                 <td className={`px-6 py-4 font-semibold text-center ${getStatusStyle(transfer.status)}`}>{formatStatus(transfer.status)}</td>
-                                <td className="px-6 py-4  text-center">
+                                <td className="px-6 py-4 text-center">{formatIsoDate(transfer.createdAt)}</td>
+                                <td className="px-6 py-4 text-center">{
                                     <button
-                                        type="button"
-                                        className="font-semibold text-blue-600 hover:underline"
-                                        onClick={() => onEdit(transfer)}
-
-                                    >
-                                        Editar
+                                        onClick={() => onView(transfer.externalId)}
+                                        className={"text-sky-500 font-semibold text-sm"}>
+                                        Detalhes
                                     </button>
-                                </td>
+                                }</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
                             <td
-                                colSpan={6}
+                                colSpan={7}
                                 className="px-6 py-4 bg-gray-200 text-center text-sky-950 text-[1rem] font-semibold">
                                 <div className={"flex flex-col gap-5 py-4"}>
                                     <p>

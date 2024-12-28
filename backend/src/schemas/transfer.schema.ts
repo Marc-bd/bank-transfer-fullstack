@@ -1,9 +1,9 @@
 import * as yup from 'yup';
 import {TransferStatus} from '../enums/transfer.enum';
 import {validate} from "uuid";
-import {AppError} from "../shared/errors/appError";
 
-export const transferSchema = yup.object(
+
+export const createTransferSchema = yup.object(
     {
         amount: yup
             .number()
@@ -14,7 +14,7 @@ export const transferSchema = yup.object(
                 'amount field must have up to two decimal places',
                 (value) => value ===
                     undefined ||
-                    /^(0(?!\.00)|[1-9]\d{0,6})\.\d{2}$/.test(value.toString())
+                    /^\d+(?:\.\d{1,2})?$/.test(value.toString())
             )
             .required('amount field is required'),
 
@@ -32,30 +32,9 @@ export const transferSchema = yup.object(
                 'dueDate field cannot be earlier than today',
                 (value) => !value || value >= new Date()
             ),
-
-        status: yup
-            .mixed<TransferStatus>()
-            .oneOf(
-                Object.values(TransferStatus),
-                `status field must be one of ${Object.values(
-                    TransferStatus).join(', ')}`
-            )
-            .required('status field is required'),
     }
 );
 
-export const updateTransferSchema = yup.object(
-    {
-        status: yup
-            .mixed<TransferStatus>()
-            .oneOf(
-                Object.values(TransferStatus),
-                `status field must be one of ${Object.values(
-                    TransferStatus).join(', ')}`
-            )
-            .required('status field is required'),
-    }
-);
 
 export const pathIdSchema = yup.object(
     {

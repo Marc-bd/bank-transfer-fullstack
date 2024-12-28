@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
 import {TransferStatus} from "../enums/transfer.enum";
 import {DecimalColumnTransformer} from "../shared/transformer";
 
@@ -24,4 +24,11 @@ export class Transfer {
                 default: TransferStatus.PENDING,
             })
     status: TransferStatus;
+
+    @Column('text', { nullable: false})
+    observation: string;
+
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt: Date;
+
 }

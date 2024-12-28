@@ -1,3 +1,4 @@
+'use client'
 import Modal from "@/components/Modal";
 import CustomInput from "@/components/CustomInput";
 import {useForm, Controller} from "react-hook-form";
@@ -7,22 +8,72 @@ import {dateValidation} from "@/utils/dateValidation";
 import {newTransferSchema} from "@/schemas/newTransferSchema";
 import {yupResolver} from "@hookform/resolvers/yup";
 import CustomButton from "@/components/CustomButton";
+import {ITransfer} from "@/interfaces/ITransfer";
+import TransferService from "@/services/transferService/TransferService";
+import {ICreateTransfer} from "@/interfaces/ICreateTransfer";
+import {toast} from "sonner";
+import {IFormCreateTransfer} from "@/interfaces/IFormCreateTransfer";
+import {useState} from "react";
 
-type FormNewTransferProps = {
-    onClose: () => void;
+type FormCreateTransferProps = {
+    onClose: (data?: ITransfer[]) => void;
 }
 
-export default function FormNewTransfer({onClose}: FormNewTransferProps) {
+export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
 
     const {control, register, setError, clearErrors, formState: {errors}, handleSubmit} = useForm(
         {
-            resolver: yupResolver(newTransferSchema)
+            resolver: yupResolver<ICreateTransfer>(newTransferSchema)
         })
 
+    const [loading, setLoading] = useState<boolean>(false);
 
-    function formSubmit(data: any) {
-        console.log(data)
-        onClose()
+
+    function convertStringDateToDate(date:string) {
+        const [day, month, year] = date.split('/');
+       return new Date(`${year}-${month}-${day}`);
+    }
+
+    function getPostMessage(status: string) {
+        switch (status) {
+            case 'completed':
+                return toast.success("Tranferência conclúida com sucesso")
+            case 'canceled':
+                return  toast.error('Transfêrencia Cancelada. Clique em detalhes para mais' +
+                                        ' informações')
+            default:
+                return toast.warning("Transferência em pendente. Clique em detalhes para mais" +
+                                         " informações")
+        }
+    }
+
+    async function formSubmit(data: ICreateTransfer) {
+        setLoading(true);
+        try {
+            const newTransferData: IFormCreateTransfer = {
+              amount: parseFloat(data.amount.replace('.', '').replace(',', '.')),
+                dueDate: data.dueDate ? convertStringDateToDate(data.dueDate) : null ,
+                expectedOn: convertStringDateToDate(data.expectedOn),
+            }
+
+            const newTransfer = await TransferService.create(newTransferData)
+
+            if(newTransfer) {
+                getPostMessage(newTransfer.status)
+                const transfers = await TransferService.getAll();
+                onClose(transfers);
+                setLoading(false);
+            } else {
+
+                onClose()
+                setLoading(false);
+            }
+
+        } catch (error) {
+            toast.error("Ops, parece que o servidor não está conectado!")
+            onClose()
+            setLoading(false);
+        }
     }
 
 
@@ -88,18 +139,18 @@ export default function FormNewTransfer({onClose}: FormNewTransferProps) {
 
                     <Controller
                         control={control}
-                        name="duoDate"
+                        name="dueDate"
                         render={({field}) => (
                             <CustomInput
                                 label="Data Limite (Opcional)"
                                 idName="duoDate"
                                 placeholder="Ex: 01/01/2025"
                                 required={false}
-                                {...register('duoDate')}
+                                {...register('dueDate')}
                                 value={field.value || ''}
                                 type={"text"}
                                 maxLength={10}
-                                errorMessage={errors.duoDate?.message}
+                                errorMessage={errors.dueDate?.message}
                                 onChange={(event) => {
                                     field.onChange(
                                         dateMask(event.target.value)
@@ -108,13 +159,13 @@ export default function FormNewTransfer({onClose}: FormNewTransferProps) {
                                     if (event.target.value.length > 9) {
                                         const validDate = dateValidation(event.target.value)
                                         if (!validDate) {
-                                            setError('duoDate', {
+                                            setError('dueDate', {
                                                 type: 'manual',
                                                 message: "Data Inválida"
                                             })
                                         }
                                     } else {
-                                        clearErrors('duoDate')
+                                        clearErrors('dueDate')
                                     }
 
                                 }}
@@ -128,9 +179,12 @@ export default function FormNewTransfer({onClose}: FormNewTransferProps) {
                             typeButton={"cancel"}
                             type={"button"}
                             onClick={() => onClose()}
+                            disabled={loading}
                         />
-                        <CustomButton title={"Salvar"}
-                                      type="submit"
+                        <CustomButton
+                            loading={loading}
+                            title={"Salvar"}
+                            type="submit"
                         />
                     </div>
 

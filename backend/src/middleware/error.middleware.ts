@@ -1,16 +1,26 @@
-import {Response, Request, NextFunction} from "express"
+
+import { Request, Response, NextFunction } from 'express';
 import {AppError} from "../shared/errors/appError";
 
 
-export function handleErrorMiddleware (
-    err: Error & Partial<AppError>,
-    req: Request ,
-    res:Response ,
-    next:NextFunction
-) {
-    const statusCode = err.statusCode ? err.statusCode:  500;
-    const message = err.errors ? err.errors : 'Internal Server Error';
+function ErrorHandler(error: any, req: Request, res: Response, next: NextFunction) {
+    let statusCode = error.statusCode || 500;
+    let status = error.status || 'error';
 
-    return res.status(statusCode).json({error: message});
+
+    if (!(error instanceof AppError)) {
+        statusCode = 500;
+        status = 'error';
+        error.message = error;
+    }
+
+    res.status(statusCode).json({
+                                    status,
+                                    message: error.message
+
+                                });
 }
 
+
+
+export default ErrorHandler;

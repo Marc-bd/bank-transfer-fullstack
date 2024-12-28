@@ -4,5 +4,6 @@ export interface ITransfer {
     expectedOn: string;
     dueDate:string | null;
     status: string;
+    observation: string;
     createdAt: string;
 }
