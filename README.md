@@ -48,14 +48,14 @@ git clone git@github.com:Marc-bd/bank-transfer-fullstack.git
 - Acesse o front-end:
   ``` cd frontend ```
 - Instale as dependências:
-  ```npm istall ```
+  ```npm install ```
 - Volte para raiz do projeto: ```cd ..```
 
 - ### **2.1. Back-End.**
 - Acesse o back-end:
   ``` cd backend ```
 - Instale as dependências:
-  ```npm istall ```
+  ```npm install ```
 - Volte para raiz do projeto: ```cd ..```
 ---
 ## **3. Inicie o docker**
