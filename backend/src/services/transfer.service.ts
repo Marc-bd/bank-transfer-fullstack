@@ -10,7 +10,6 @@ class TransferService {
 
 
     private static async randomSettlement(): Promise<{ status: TransferStatus; observation: string }> {
-        console.log('Iniciando randomSettlement');
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {

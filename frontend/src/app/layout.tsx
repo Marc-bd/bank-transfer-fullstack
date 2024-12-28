@@ -22,7 +22,7 @@ export default function RootLayout({
       <CustomHeader />
       <main className="overflow-auto">
         {children}
-      <Toaster position="top-right" richColors duration={1400} />
+      <Toaster position="top-right" richColors />
       </main>
       </body>
     </html>

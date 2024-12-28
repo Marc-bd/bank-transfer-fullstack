@@ -13,15 +13,22 @@ import TransferService from "@/services/transferService/TransferService";
 import {ICreateTransfer} from "@/interfaces/ICreateTransfer";
 import {toast} from "sonner";
 import {IFormCreateTransfer} from "@/interfaces/IFormCreateTransfer";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 type FormCreateTransferProps = {
-    onClose: (data?: ITransfer[]) => void;
+    onCloseForm: (data?: ITransfer[]) => void;
 }
 
-export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
+export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProps) {
 
-    const {control, register, setError, clearErrors, formState: {errors}, handleSubmit} = useForm(
+    const {control,
+        register,
+        setError,
+        clearErrors,
+        formState: {errors},
+        handleSubmit,
+        watch
+    } = useForm(
         {
             resolver: yupResolver<ICreateTransfer>(newTransferSchema)
         })
@@ -37,15 +44,18 @@ export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
     function getPostMessage(status: string) {
         switch (status) {
             case 'completed':
-                return toast.success("Tranferência conclúida com sucesso")
+                return toast.success("Tranferência conclúida com sucesso!")
             case 'canceled':
                 return  toast.error('Transfêrencia Cancelada. Clique em detalhes para mais' +
-                                        ' informações')
+                                        ' informações!')
             default:
-                return toast.warning("Transferência em pendente. Clique em detalhes para mais" +
-                                         " informações")
+                return toast.warning("Transferência Pendente. Clique em detalhes para mais" +
+                                         " informações!")
         }
     }
+
+
+
 
     async function formSubmit(data: ICreateTransfer) {
         setLoading(true);
@@ -61,20 +71,22 @@ export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
             if(newTransfer) {
                 getPostMessage(newTransfer.status)
                 const transfers = await TransferService.getAll();
-                onClose(transfers);
+                onCloseForm(transfers);
                 setLoading(false);
             } else {
 
-                onClose()
+                onCloseForm()
                 setLoading(false);
             }
 
         } catch (error) {
             toast.error("Ops, parece que o servidor não está conectado!")
-            onClose()
+            onCloseForm()
             setLoading(false);
         }
     }
+
+
 
 
     return (
@@ -142,8 +154,8 @@ export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
                         name="dueDate"
                         render={({field}) => (
                             <CustomInput
-                                label="Data Limite (Opcional)"
-                                idName="duoDate"
+                                label="Data de Vencimento (Opcional)"
+                                idName="dueDate"
                                 placeholder="Ex: 01/01/2025"
                                 required={false}
                                 {...register('dueDate')}
@@ -178,13 +190,14 @@ export default function FormCreateTransfer({onClose}: FormCreateTransferProps) {
                             title={"Cancelar"}
                             typeButton={"cancel"}
                             type={"button"}
-                            onClick={() => onClose()}
+                            onClick={() => onCloseForm()}
                             disabled={loading}
                         />
                         <CustomButton
                             loading={loading}
                             title={"Salvar"}
                             type="submit"
+                            disabled={loading}
                         />
                     </div>
 

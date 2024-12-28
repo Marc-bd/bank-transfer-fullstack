@@ -34,7 +34,7 @@ export default function CustomButton({
             ' rounded shadow`}
             {...props}
         >
-            {loading ? (<Spinner/>) : title}
+            {loading ? (<div className={"flex flex-col items-center"}><Spinner/></div>) : title}
         </button>
     )
 }

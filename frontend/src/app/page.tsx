@@ -65,7 +65,7 @@ export default function Home() {
             </div>
 
             {
-                openNewForm && <FormCreateTransfer onClose={(data) => onCloseNewForm(data)}/>
+                openNewForm && <FormCreateTransfer onCloseForm={(data) => onCloseNewForm(data)}/>
             }
 
             {
