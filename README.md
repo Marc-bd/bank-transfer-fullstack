@@ -62,7 +62,7 @@ git clone git@github.com:Marc-bd/bank-transfer-fullstack.git
 
 - **1**. Na raiz do projeto ```/bank-transfer-fullStack```,
 - abra o terminal e execute o seguinte
-  comando: ``` docker-compose-up ```
+  comando: ``` docker compose up ```
 
 Se você tiver algum problema durante a instalação, verifique se o Docker está em execução
 corretamente e se todas as dependências foram instaladas nas pastas correspondentes.
