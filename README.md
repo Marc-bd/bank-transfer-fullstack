@@ -42,7 +42,7 @@ git clone git@github.com:Marc-bd/bank-transfer-fullstack.git
 ## **2. Instale as dependências do projeto.**
 
 - ### **2.1. Entre no projeto.**
-- ```cd bank-transfer-fullstack ```
+- ```cd .\bank-transfer-fullstack\ ```
 
 - ### **2.1. Front-End.**
 - Acesse o front-end:
