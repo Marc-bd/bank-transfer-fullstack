@@ -22,7 +22,7 @@ garantir a facilidade de configuração e consistência no ambiente de desenvolv
 ## **Pré-requisitos**
 
 Antes de começar, certifique-se de ter instalado:
-
+- [Node](https://nodejs.org/en/download) (v16 ou superior)
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -66,7 +66,6 @@ git clone git@github.com:Marc-bd/bank-transfer-fullstack.git
 
 Se você tiver algum problema durante a instalação, verifique se o Docker está em execução
 corretamente e se todas as dependências foram instaladas nas pastas correspondentes.
----
 
 # Portas
 
@@ -106,7 +105,7 @@ Cria uma nova transferência financeira.
   "amount": "number",
   "expectedOn": "date",
   "dueDate": "date | null",
-  "status": "boolean",
+   "status": "string",
   "observation": "string",
   "createdAt": "date"
 }
@@ -130,7 +129,7 @@ Busca todas as trânsferências
     "amount": "number",
     "expectedOn": "date",
     "dueDate": "date | null",
-    "status": "boolean",
+     "status": "string",
     "observation": "string",
     "createdAt": "date"
   }]
@@ -157,8 +156,17 @@ id: uuid
     "amount": "number",
     "expectedOn": "date",
     "dueDate": "date | null",
-    "status": "boolean",
+      "status": "string",
     "observation": "string",
     "createdAt": "date"
   }
 ```
+---
+
+## Decisões Técnicas Tomadas
+
+- **Back-end (Node.js e Express):** Foi escolhido Node.js por sua eficiência e pela facilidade de criar APIs rápidas e escaláveis. O Express foi utilizado por ser um framework minimalista e flexível.
+- **Front-end (Next.js):** Next.js foi escolhido por seu suporte a renderização do lado do servidor (SSR), melhorando a performance e a otimização para SEO.
+- **Banco de Dados (PostgreSQL):** Optamos por PostgreSQL devido à sua robustez e suporte avançado a transações e consultas complexas.
+- **Containerização (Docker):** Utilizamos Docker para garantir consistência entre os ambientes de desenvolvimento e produção, facilitando o deploy e a configuração do ambiente.
+
