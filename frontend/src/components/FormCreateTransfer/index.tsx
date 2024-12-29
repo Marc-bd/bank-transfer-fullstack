@@ -81,8 +81,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
             }
 
         } catch (error) {
-
-            toast.error("Ops, parece que o servidor não está conectado!")
+            toast.error("Ops, verifique se as informações estão corretas")
             onCloseForm()
             setLoading(false);
         }
@@ -135,6 +134,7 @@ export default function FormCreateTransfer({onCloseForm}: FormCreateTransferProp
 
                                     if (event.target.value.length > 9) {
                                         const validDate = dateValidation(event.target.value)
+
                                         if (!validDate) {
 
                                             setError('expectedOn', {

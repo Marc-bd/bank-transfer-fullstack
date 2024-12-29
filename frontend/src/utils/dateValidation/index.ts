@@ -1,27 +1,17 @@
+import { parse, isValid, startOfDay, isPast} from 'date-fns';
 
 export function dateValidation(dateString: string) {
-    const [day, month, year] = dateString.split('/').map(Number);
+    const date = parse(dateString, 'dd/MM/yyyy', new Date())
 
-
-    if (!day || !month || !year || year.toString().length !== 4) {
-        return false;
+    if(!isValid(date)) {
+        return false
     }
 
-    const date = new Date(year, month - 1, day);
+   const dateZeroMinutes = startOfDay(date)
+   const todayZeroMinutes = startOfDay(new Date())
 
-    if (
-        date.getFullYear() !== year ||
-        date.getMonth() + 1 !== month ||
-        date.getDate() !== day
-    ) {
-        return false;
-    }
+    return dateZeroMinutes >= todayZeroMinutes
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
-    const maxDate = new Date();
-    maxDate.setFullYear(today.getFullYear() + 10);
 
-    return date >= today && date <= maxDate;
 }
